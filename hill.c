@@ -1,0 +1,126 @@
+//including standard library
+#include<stdio.h>
+#include<math.h>
+#include<string.h>
+#include "hill_cipher.h"
+
+//defining global variables
+float encrypt[3][1], decrypt[3][1],  message[3][1],invmat[3][3];
+float key[3][3]={{6,24,1},{13,16,10},{20,17,15}};
+float temp[3][3] = {{6,24,1},{13,16,10},{20,17,15}};
+ 
+void encryption(); //encrypts the message
+void decryption(); //decrypts the message
+void getKeyMessage(); //gets key and message from user
+void inverse(); //finds inverse of key matrix
+ 
+//main function 
+void main() {
+getKeyMessage();
+encryption();
+decryption();
+}
+
+//function to encrypt the string 
+void encryption() {
+int i, j, k;
+for(i = 0; i < 3; i++)
+{
+    for(j = 0; j < 1; j++)
+    {
+        for(k = 0; k < 3; k++)
+        {
+            encrypt[i][j] = encrypt[i][j] + key[i][k] * message[k][j];
+        }
+    }
+}
+printf("\nEncrypted string is: ");
+for(int i = 0; i < 3; i++)
+{
+printf("%c", (char)(fmod(encrypt[i][0], 26) + 97));
+}
+ 
+}
+ 
+//function to decrypt the encrypted string
+
+void decryption() {
+int i, j, k;
+inverse();
+for(i = 0; i < 3; i++)
+{
+    for(j = 0; j < 1; j++)
+    {
+        for(k = 0; k < 3; k++)
+        {
+            decrypt[i][j] = decrypt[i][j] + invmat[i][k] * encrypt[k][j];
+        }
+    }
+}
+printf("\nDecrypted string is: ");
+for(int i = 0; i < 3; i++)
+{
+    printf("%c", (char)(fmod(decrypt[i][0], 26) + 97));
+}
+}
+
+
+//function to get the message string
+
+void getKeyMessage() {
+int i, j;
+char msg[3]="hel";
+printf("Message : %s",msg);
+for(int i=0;i<=strlen(msg);i++)
+{
+    if(msg[i]>=65&&msg[i]<=90)
+        msg[i]=msg[i]+32;
+}
+for(i = 0; i < 3; i++)
+{
+    message[i][0] = msg[i]-97;
+}
+
+}
+
+//finding the inverse matrix of the key matrix
+
+void inverse()
+{
+int i, j, k;
+float p, q;
+for(i = 0; i < 3; i++)
+{
+    for(j = 0; j < 3; j++) 
+    {
+        if(i == j)
+            invmat[i][j]=1;
+        else
+            invmat[i][j]=0;
+    }
+}
+for(k = 0; k < 3; k++) 
+{
+    for(i = 0; i < 3; i++) 
+    {
+        p = temp[i][k];
+        q = temp[k][k];
+        for(j = 0; j < 3; j++) 
+        {
+            
+            if(i != k) 
+            {
+                temp[i][j] = temp[i][j]*q - p*temp[k][j];
+                invmat[i][j] = invmat[i][j]*q - p*invmat[k][j];
+            }
+        }
+    }
+}
+for(i = 0; i < 3; i++)
+{
+    for(j = 0; j < 3; j++)
+    {
+        invmat[i][j] = invmat[i][j] / temp[i][i];
+    }         
+}
+}
