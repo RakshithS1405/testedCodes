@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<math.h>
 #include<string.h>
-#include "hill_cipher.h"
+
 
 //defining global variables
 float encrypt[3][1], decrypt[3][1],  message[3][1],invmat[3][3];
