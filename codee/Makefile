@@ -2,7 +2,7 @@ PROJ_NAME =sdlc
 TEST_PROJ_NAME = Test_$(PROJ_NAME)
 
 SRC =src/vigenere.c\
-src/login.c\
+
 
 
 
